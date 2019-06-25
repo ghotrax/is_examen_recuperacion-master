@@ -149,7 +149,24 @@ public class InventarioApplicationTests {
     }
 
 
+    @Test
+    public void whenSameFruitinsert() {
+        System.out.println("Test #10 - ,ultipleinsert");
 
+        // given
+        FruitEntity Papaya = new FruitEntity("Papaya", 15.00f, 15l);
+        FruitEntity Papaya2 = new FruitEntity("Papaya", 10.50f, 100l);
+        String expectedResult = "[Papaya, Papaya]";
+
+        // when
+        this.testRestTemplate.delete("/inventory/fruit/reset");
+        FruitEntity insertPapaya = this.testRestTemplate.postForObject("/inventory/fruit/register",Papaya, FruitEntity.class);
+        FruitEntity insertPapaya2 = this.testRestTemplate.postForObject("/inventory/fruit/register", Papaya2, FruitEntity.class);
+        String actualResult = this.testRestTemplate.getForObject("/inventory/fruit/getAllFruitNames", String.class);
+
+        // then
+        Assert.assertEquals("Test #10 failed!!!", expectedResult, actualResult);
+    }
 
 
 }
