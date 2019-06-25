@@ -97,6 +97,41 @@ public class InventarioApplicationTests {
                 
         // then
         Assert.assertEquals("Test #4 failed!!!", expectedResult, actualResult);
+
     }
+    @Test
+    public void whenfruitinsert_thenGetSubtotal() {
+        System.out.println("Test #5 - whenfruitInser then we get subtotal .");
+
+        // given
+        FruitEntity papaya = new FruitEntity("Papaya", 10.00f, 10l);
+        Double expectedResult = 90.00d;
+
+        // when
+        this.testRestTemplate.delete("/inventory/fruit/reset");
+        FruitEntity insertPapaya = this.testRestTemplate.postForObject("/inventory/fruit/register", papaya, FruitEntity.class);
+        Double actualResult = this.testRestTemplate.getForObject("/inventory/fruit/getSubtotal/Papaya/10?discount=10", Double.class);
+
+        // then
+        Assert.assertEquals("Test #5 failed!!!", expectedResult, actualResult);
+    }
+    @Test
+    public void whengetAnyDiscountFruit_thenpricefruitactuallyDiscount() {
+        System.out.println("Test #6 - when fruit discount then fruit price discount.");
+
+        // given
+        FruitEntity papaya = new FruitEntity("Papaya", 10.50f, 100l);
+        Double expectedResult = 3.50d;
+
+        // when
+        this.testRestTemplate.delete("/inventory/fruit/reset");
+        FruitEntity insertPapaya = this.testRestTemplate.postForObject("/inventory/fruit/register", papaya, FruitEntity.class);
+        Double actualResult = this.testRestTemplate.getForObject("/inventory/fruit/getReducedPrice/Papaya?discount=7", Double.class);
+
+        // then
+        Assert.assertEquals("Test #6 failed!!!", expectedResult, actualResult);
+    }
+
+
 
 }
