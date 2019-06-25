@@ -116,8 +116,24 @@ public class InventarioApplicationTests {
         Assert.assertEquals("Test #5 failed!!!", expectedResult, actualResult);
     }
     @Test
+    public void whenFruitinsert_thenFruitUP() {
+        System.out.println("Test #6 - when fruit insert then stock update.");
+
+        // given
+        FruitEntity Banano = new FruitEntity("Banano", 2.50f, 100l);
+        Long expectedResult = 100l;
+
+        // when
+        this.testRestTemplate.delete("/inventory/fruit/reset");
+        FruitEntity insertBanano= this.testRestTemplate.postForObject("/inventory/fruit/register",Banano, FruitEntity.class);
+        Long actualResult = this.testRestTemplate.getForObject("/inventory/fruit/getFruitStock/1",Long.class);
+
+        // then
+        Assert.assertEquals("Test #6 failed!!!", expectedResult, actualResult);
+    }
+    @Test
     public void whengetAnyDiscountFruit_thenpricefruitactuallyDiscount() {
-        System.out.println("Test #6 - when fruit discount then fruit price discount.");
+        System.out.println("Test #7 - when fruit discount then fruit price discount.");
 
         // given
         FruitEntity papaya = new FruitEntity("Papaya", 10.50f, 100l);
@@ -129,8 +145,10 @@ public class InventarioApplicationTests {
         Double actualResult = this.testRestTemplate.getForObject("/inventory/fruit/getReducedPrice/Papaya?discount=7", Double.class);
 
         // then
-        Assert.assertEquals("Test #6 failed!!!", expectedResult, actualResult);
+        Assert.assertEquals("Test #7 failed!!!", expectedResult, actualResult);
     }
+
+
 
 
 
